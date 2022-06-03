@@ -9,10 +9,117 @@
     <style type="text/css">
         #gis {width: 80%;height:700px;}
     </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css' %}"> 
     <script type="text/javascript" src= "{% static 'dist/leaflet.ajax.js' %}"> </script>
-    </head>
-    <body>
-        <h3>We are heroes!!</h3>
+    <script type="text/javascript" src= "{% static 'leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js' %}">  </script>
+</head>
+<body>
+<h3>We are heroes!!</h3>
+<br/>
+<script type="text/javascript">
+        function our_layers(map,options){
+            var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+            var datasets = new L.GeoJSON.AJAX("{% url 'subcounty' %}",{
+                style: function colors(feature){
+                switch(feature.properties.adm2_en){
+                    case 'Changamwe':
+                        return{
+                            color: 'green',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                    case 'Jomvu':
+                        return{
+                            color: 'yellow',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                    case 'Kisauni':
+                        return{
+                            color: 'red',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                    case 'Likoni':
+                        return{
+                            color: 'purple',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                    case 'Mvita':
+                        return{
+                            color: 'orange',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                    case 'Nyali':
+                        return{
+                            color: 'pink',
+                            fillOpacity: 0.8
+                        };
+                    break;
+                   
+                }
+            },
+                
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.adm2_en.toString());
+                }
+
+            });
+
+            var points = new L.GeoJSON.AJAX("{% url 'historicalsite' %}",{
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Name.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Location.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Image.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.PlotNo.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Area.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Dev_plotNo.toString());
+                },
+
+                onEachFeature: function(feature,layer){
+                layer.bindPopup(feature.properties.Section.toString());
+                }
+                
+            });
+            
+            datasets.addTo(map);
+            points.addTo(map);
+
+            var baseLayers = {
+            "OSM": osm
+            }
+
+            var groupedOverlays = {
+            "Layers": {
+                "subcounty": datasets,
+                "historicalsite": points
+            },
+            
+            };
+
+            L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
+        
+        }  
+        
+</script>
 {% leaflet_map "gis" callback="window.our_layers" %}
     </body>
 </html>
