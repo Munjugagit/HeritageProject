@@ -62,7 +62,7 @@ ROOT_URLCONF = 'mysites.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,8 +139,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LEAFLET_CONFIG = {
-    'DEFAULT_CENTER': (0.023,36.87),
-    'DEFAULT_ZOOM': 5,
+    'DEFAULT_CENTER': (-4.04,39.658),
+    'DEFAULT_ZOOM': 10,
     'MAX_ZOOM': 20,
     'MIN_ZOOM': 3,
     'SCALE': 'both',
