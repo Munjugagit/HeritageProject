@@ -7,19 +7,31 @@
         {% leaflet_css %}
     <title>Our Home</title>
     <style type="text/css">
-        #gis {width: 80%;height:700px;}
+       
+       #gis {
+            width:100%;
+            height: calc(100vh - 150px);
+            margin: 0;
+            padding: 0;
+        }
+        h3{
+            font-size: 33px;
+            text-align: center;
+        }
+
+
     </style>
     <link rel="stylesheet" type="text/css" href="{% static 'leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css' %}"> 
     <script type="text/javascript" src= "{% static 'leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js' %}"> </script>
     <script type="text/javascript" src= "{% static 'dist/leaflet.ajax.js' %}"> </script>
 </head>
 <body>
-<h3>Heritage Sites!!</h3>
+    <h3>Mombasa Heritage Sites</h3>
 <br/>
 <script type="text/javascript">
         function our_layers(map,options){
-            var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
-
+            var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            
             ).addTo(map);
 
             var datasets = new L.GeoJSON.AJAX("{% url 'subcounty' %}",{
@@ -73,7 +85,7 @@
 
             var points = new L.GeoJSON.AJAX("{% url 'historicalsite' %}",{
                 onEachFeature: function(feature,layer){
-                    layer.bindPopup('<img src="'+feature.properties.Image.url+'" /><p>Name:'+feature.properties.Name+'</p><p>PlotNo:'+feature.properties.PlotNo+'</p><p>Area:'+feature.properties.Area+'</p>');
+                    layer.bindPopup('<img src="http://127.0.0.1:8000/media/'+feature.properties.Image+'" /><p>Name:'+feature.properties.Name+'</p><p>PlotNo:'+feature.properties.PlotNo+'</p><p>Area:'+feature.properties.Area+'</p>');
                 }
 
             });
